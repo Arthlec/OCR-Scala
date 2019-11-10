@@ -36,9 +36,31 @@
  * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
 
-object Main extends App with OCR {
-//  def main(args: Array[String]) {
-//    println( "Hello world");
-//  }
-  println( "Hello world")
+import scalafx.application.JFXApp
+import scalafx.application.JFXApp.PrimaryStage
+import scalafx.scene.Scene
+import scalafx.scene.canvas.{Canvas, GraphicsContext}
+import scalafx.scene.image.Image
+import scalafx.scene.layout.Pane
+import scalafx.scene.paint.Color._
+
+object Main extends JFXApp with OCR {
+  val windowHeight = 300
+  val windowWidth = 300
+  val canvas = new Canvas(windowWidth, windowHeight)
+  val image = new Image("main/data/mnist_png/testing/0/3.png")
+  val graphicsContext: GraphicsContext = canvas.graphicsContext2D
+
+  stage = new PrimaryStage {
+    title = "Scala OCR"
+    width = windowWidth
+    height = windowHeight
+    scene = new Scene {
+      fill = Green
+      root = new Pane {
+        children = List(canvas)
+      }
+    }
+  }
+  graphicsContext.drawImage(image, 0, 0)
 }
