@@ -1,17 +1,6 @@
 /***
  * Optical Character Recognition (OCR)
  *
- *
- * Datasets :
- * https://lionbridge.ai/datasets/15-best-ocr-handwriting-datasets/
- *
- * *** Stanford Dataset (http://ai.stanford.edu/~btaskar/ocr/) ***
- * The tab delimited data file (letter.data.gz) contains a line for each letter, with its label, pixel values,
- * and several additional fields listed in letter.names file.
- * Columns : id, letter, next_id, word_id, position, fold, p_0_0, p_0_1, ...
- * Lettres en 16 x 8 pixels
- *
- *
  * *** The MNIST Database (http://yann.lecun.com/exdb/mnist/) ***
  * The MNIST database of handwritten digits, available from this page, has a training set of 60,000 examples, and a test
  * set of 10,000 examples. It is a subset of a larger set available from NIST. The digits have been size-normalized and
@@ -22,6 +11,17 @@
  * pixels, and translating the image so as to position this point at the center of the 28x28 field.
  *
  * Getting the dataset as a PNG format (https://github.com/myleott/mnist_png)
+ *
+ * Other Datasets for future implementation :
+ * https://lionbridge.ai/datasets/15-best-ocr-handwriting-datasets/
+ *
+ * *** Stanford Dataset (http://ai.stanford.edu/~btaskar/ocr/) ***
+ * The tab delimited data file (letter.data.gz) contains a line for each letter, with its label, pixel values,
+ * and several additional fields listed in letter.names file.
+ * Columns : id, letter, next_id, word_id, position, fold, p_0_0, p_0_1, ...
+ * Lettres en 16 x 8 pixels
+ *
+ *
  *
  *
  * Ressources :
