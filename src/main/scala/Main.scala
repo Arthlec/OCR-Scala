@@ -50,7 +50,7 @@ object Main extends JFXApp with OCR {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
-  val image = new Image("main/data/mnist_png/testing/0/3.png",
+  val image = new Image("main/resources/mnist_png/testing/0/3.png",
     canvas.getWidth, canvas.getHeight, false, false)
   val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
