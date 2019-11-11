@@ -38,8 +38,7 @@
  * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
 
-import java.io.File
-
+import os.RelPath
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
@@ -53,14 +52,15 @@ object Main extends JFXApp with OCR {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
-  val wd = os.pwd
+  val wd = os.pwd/"src"
   System.out.println(wd)
-  val datasetPath = os.rel/"src"/"main"/"data"/"mnist_png"/"testing"
-  System.out.println(wd / datasetPath)
-  System.out.println(os.exists(wd / datasetPath))
-  System.out.println(os.isDir(wd / datasetPath))
-  System.out.println(os.list(wd / datasetPath))
-  val image = new Image(datasetPath.toString().replace("\\", "/") + "/0/3.png",
+  val datasetPath: RelPath = os.rel/"main"/"data"/"mnist_png"/"testing"
+//  System.out.println(wd / datasetPath)
+//  System.out.println(os.exists(wd / datasetPath))
+//  System.out.println(os.isDir(wd / datasetPath))
+//  System.out.println(os.list(wd / datasetPath))
+
+  val image = new Image((datasetPath /"0"/"3.png").toString.replace("\\", "/"),
     canvas.getWidth, canvas.getHeight, false, false)
   val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
@@ -74,7 +74,7 @@ object Main extends JFXApp with OCR {
         spacing = 40.0
         children = List(canvas, new BorderPane {
             center = new Label {
-              text = "" // + getListOfDirectories(datasetPath)
+              text = "" + os.list(wd/datasetPath)
             }
           }
         )
@@ -82,12 +82,4 @@ object Main extends JFXApp with OCR {
     }
   }
   graphicsContext.drawImage(image, 0, 0)
-
-  def getListOfDirectories(dir: File):List[File] = {
-    List[File]()
-  }
-  def recursiveListFiles(f: File): Array[File] = {
-    val these = f.listFiles
-    these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
-  }
 }
