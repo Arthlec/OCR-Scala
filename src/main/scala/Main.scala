@@ -38,7 +38,7 @@
  * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
 
-import os.RelPath
+import os.{Path, RelPath}
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
@@ -47,25 +47,34 @@ import scalafx.scene.control.{Button, Label}
 import scalafx.scene.image.Image
 import scalafx.scene.layout.{AnchorPane, BorderPane, VBox}
 import scalafx.scene.paint.Color._
+import scalafx.stage.StageStyle
+
+import scala.util.Random
 
 object Main extends JFXApp with OCR {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
-  val wd = os.pwd/"src"
-  System.out.println(wd)
+  val wd: Path = os.pwd/"src"
   val datasetPath: RelPath = os.rel/"main"/"data"/"mnist_png"/"testing"
 //  System.out.println(wd / datasetPath)
 //  System.out.println(os.exists(wd / datasetPath))
 //  System.out.println(os.isDir(wd / datasetPath))
 //  System.out.println(os.list(wd / datasetPath))
-
-  val image = new Image((datasetPath /"0"/"3.png").toString.replace("\\", "/"),
+  System.out.println((datasetPath /"0"/"3.png").toString.replace("\\", "/"))
+  val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(10)
+  System.out.println(imagesIdxDataset.length)
+  System.out.println(imagesIdxDataset)
+  //(datasetPath /"0"/"3.png").toString.replace("\\", "/")
+  val imagePath = imagesIdxDataset.head.toString.replace("\\", "/")
+  System.out.println(imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length))
+  val image = new Image(imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length),
     canvas.getWidth, canvas.getHeight, false, false)
   val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
   stage = new PrimaryStage {
     title = "Scala OCR"
+    resizable = false
     width = windowWidth
     height = windowHeight
     scene = new Scene {
@@ -83,7 +92,7 @@ object Main extends JFXApp with OCR {
         AnchorPane.setTopAnchor(previousButton, 30)
         AnchorPane.setRightAnchor(nextButton, 20)
         AnchorPane.setTopAnchor(nextButton, 30)
-        val pane = new AnchorPane {
+        val pane: AnchorPane = new AnchorPane {
           children = Seq(answerText, previousButton, nextButton, outputText)
         }
 
