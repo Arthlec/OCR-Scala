@@ -25,6 +25,8 @@
  *
  *
  * Ressources :
+ * https://docs.opencv.org/2.4/doc/tutorials/features2d/trackingmotion/harris_detector/harris_detector.html
+ *
  * https://en.wikipedia.org/wiki/Optical_character_recognition
  * https://github.com/saibot94/scala-ocr-parser
  * http://tess4j.sourceforge.net/
@@ -36,21 +38,29 @@
  * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
 
+import java.io.File
+
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.canvas.{Canvas, GraphicsContext}
 import scalafx.scene.control.Label
 import scalafx.scene.image.Image
-import scalafx.scene.layout.{Border, BorderPane, Pane, VBox}
+import scalafx.scene.layout.{BorderPane, VBox}
 import scalafx.scene.paint.Color._
-import scalafx.scene.text.Text
 
 object Main extends JFXApp with OCR {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
-  val image = new Image("main/resources/mnist_png/testing/0/3.png",
+  val wd = os.pwd
+  System.out.println(wd)
+  val datasetPath = os.rel/"src"/"main"/"data"/"mnist_png"/"testing"
+  System.out.println(wd / datasetPath)
+  System.out.println(os.exists(wd / datasetPath))
+  System.out.println(os.isDir(wd / datasetPath))
+  System.out.println(os.list(wd / datasetPath))
+  val image = new Image(datasetPath.toString().replace("\\", "/") + "/0/3.png",
     canvas.getWidth, canvas.getHeight, false, false)
   val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
@@ -64,7 +74,7 @@ object Main extends JFXApp with OCR {
         spacing = 40.0
         children = List(canvas, new BorderPane {
             center = new Label {
-              text = "test"
+              text = "" // + getListOfDirectories(datasetPath)
             }
           }
         )
@@ -72,4 +82,12 @@ object Main extends JFXApp with OCR {
     }
   }
   graphicsContext.drawImage(image, 0, 0)
+
+  def getListOfDirectories(dir: File):List[File] = {
+    List[File]()
+  }
+  def recursiveListFiles(f: File): Array[File] = {
+    val these = f.listFiles
+    these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
+  }
 }
