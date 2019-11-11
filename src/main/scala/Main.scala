@@ -40,15 +40,18 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.canvas.{Canvas, GraphicsContext}
+import scalafx.scene.control.Label
 import scalafx.scene.image.Image
-import scalafx.scene.layout.Pane
+import scalafx.scene.layout.{Border, BorderPane, Pane, VBox}
 import scalafx.scene.paint.Color._
+import scalafx.scene.text.Text
 
 object Main extends JFXApp with OCR {
-  val windowHeight = 300
-  val windowWidth = 300
-  val canvas = new Canvas(windowWidth, windowHeight)
-  val image = new Image("main/data/mnist_png/testing/0/3.png")
+  val windowHeight = 600
+  val windowWidth = 400
+  val canvas = new Canvas(400, 400)
+  val image = new Image("main/data/mnist_png/testing/0/3.png",
+    canvas.getWidth, canvas.getHeight, false, false)
   val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
   stage = new PrimaryStage {
@@ -56,9 +59,15 @@ object Main extends JFXApp with OCR {
     width = windowWidth
     height = windowHeight
     scene = new Scene {
-      fill = Green
-      root = new Pane {
-        children = List(canvas)
+      fill = Black
+      root = new VBox {
+        spacing = 40.0
+        children = List(canvas, new BorderPane {
+            center = new Label {
+              text = "test"
+            }
+          }
+        )
       }
     }
   }
