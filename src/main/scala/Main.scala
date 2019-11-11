@@ -43,9 +43,9 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.canvas.{Canvas, GraphicsContext}
-import scalafx.scene.control.Label
+import scalafx.scene.control.{Button, Label}
 import scalafx.scene.image.Image
-import scalafx.scene.layout.{BorderPane, VBox}
+import scalafx.scene.layout.{AnchorPane, BorderPane, VBox}
 import scalafx.scene.paint.Color._
 
 object Main extends JFXApp with OCR {
@@ -71,13 +71,24 @@ object Main extends JFXApp with OCR {
     scene = new Scene {
       fill = Black
       root = new VBox {
-        spacing = 40.0
-        children = List(canvas, new BorderPane {
-            center = new Label {
-              text = "" + os.list(wd/datasetPath)
-            }
-          }
-        )
+        val answerText: Label = new Label {text = "Answer : "}
+        val outputText: Label = new Label {text = "Output : "}
+        val previousButton: Button = new Button {text = "Previous"}
+        val nextButton: Button = new Button {text = "Next"}
+        AnchorPane.setTopAnchor(answerText, 0)
+        AnchorPane.setLeftAnchor(answerText, canvas.getWidth/2 - 35)
+        AnchorPane.setTopAnchor(outputText, 70)
+        AnchorPane.setLeftAnchor(outputText, canvas.getWidth/2 - 35)
+        AnchorPane.setLeftAnchor(previousButton, 20)
+        AnchorPane.setTopAnchor(previousButton, 30)
+        AnchorPane.setRightAnchor(nextButton, 20)
+        AnchorPane.setTopAnchor(nextButton, 30)
+        val pane = new AnchorPane {
+          children = Seq(answerText, previousButton, nextButton, outputText)
+        }
+
+        spacing = 20.0
+        children = List(canvas, pane)
       }
     }
   }
