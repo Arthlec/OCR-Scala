@@ -38,16 +38,11 @@
  * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
 
+import main.view._
 import os.{Path, RelPath}
 import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.scene.Scene
 import scalafx.scene.canvas.{Canvas, GraphicsContext}
-import scalafx.scene.control.{Button, Label}
 import scalafx.scene.image.Image
-import scalafx.scene.layout.{AnchorPane, BorderPane, VBox}
-import scalafx.scene.paint.Color._
-import scalafx.stage.StageStyle
 
 import scala.util.Random
 
@@ -61,45 +56,18 @@ object Main extends JFXApp with OCR {
 //  System.out.println(os.exists(wd / datasetPath))
 //  System.out.println(os.isDir(wd / datasetPath))
 //  System.out.println(os.list(wd / datasetPath))
-  System.out.println((datasetPath /"0"/"3.png").toString.replace("\\", "/"))
+
   val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(10)
+  val imagesIterator: Iterator[Path] = imagesIdxDataset.iterator
   System.out.println(imagesIdxDataset.length)
   System.out.println(imagesIdxDataset)
-  //(datasetPath /"0"/"3.png").toString.replace("\\", "/")
-  val imagePath = imagesIdxDataset.head.toString.replace("\\", "/")
-  System.out.println(imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length))
-  val image = new Image(imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length),
-    canvas.getWidth, canvas.getHeight, false, false)
+
+  val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
+  val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
+  System.out.println(imagePath)
+
+  val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, false, false)
   val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
-  stage = new PrimaryStage {
-    title = "Scala OCR"
-    resizable = false
-    width = windowWidth
-    height = windowHeight
-    scene = new Scene {
-      fill = Black
-      root = new VBox {
-        val answerText: Label = new Label {text = "Answer : "}
-        val outputText: Label = new Label {text = "Output : "}
-        val previousButton: Button = new Button {text = "Previous"}
-        val nextButton: Button = new Button {text = "Next"}
-        AnchorPane.setTopAnchor(answerText, 0)
-        AnchorPane.setLeftAnchor(answerText, canvas.getWidth/2 - 35)
-        AnchorPane.setTopAnchor(outputText, 70)
-        AnchorPane.setLeftAnchor(outputText, canvas.getWidth/2 - 35)
-        AnchorPane.setLeftAnchor(previousButton, 20)
-        AnchorPane.setTopAnchor(previousButton, 30)
-        AnchorPane.setRightAnchor(nextButton, 20)
-        AnchorPane.setTopAnchor(nextButton, 30)
-        val pane: AnchorPane = new AnchorPane {
-          children = Seq(answerText, previousButton, nextButton, outputText)
-        }
-
-        spacing = 20.0
-        children = List(canvas, pane)
-      }
-    }
-  }
-  graphicsContext.drawImage(image, 0, 0)
+  stage = refresh(windowWidth, windowHeight, canvas, graphicsContext, image)
 }
