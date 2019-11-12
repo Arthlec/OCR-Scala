@@ -1,16 +1,26 @@
-package main
+package main.scala
 
+import javafx.scene.input
+import main.scala.Main.setStage
+import os.Path
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.canvas.{Canvas, GraphicsContext}
-import scalafx.scene.control.{Button, Label}
+import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.control.{Alert, Button, Label}
 import scalafx.scene.image.Image
 import scalafx.scene.layout.{AnchorPane, VBox}
 import scalafx.scene.paint.Color.Black
 
 package object view {
-  def refresh(windowWidth : Double, windowHeight : Double, canvas: Canvas, graphicsContext: GraphicsContext,
-              image: Image): PrimaryStage = {
+  def refresh(windowWidth : Double, windowHeight : Double, canvas: Canvas, imagesIterator: Iterator[Path]):
+  PrimaryStage = {
+    val graphicsContext: GraphicsContext = canvas.graphicsContext2D
+    val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
+    val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
+    System.out.println(imagePath)
+    val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, false, false)
+
     new PrimaryStage {
       title = "Scala OCR"
       resizable = false
@@ -25,7 +35,20 @@ package object view {
             text = "Previous"
             disable = true
           }
-          val nextButton: Button = new Button {text = "Next"}
+          val nextButton: Button = new Button {
+            text = "Next"
+            onMouseClicked = (_: input.MouseEvent) => {
+              if (imagesIterator.hasNext)
+                setStage(refresh(windowWidth, windowHeight, canvas, imagesIterator))
+              else
+                new Alert(AlertType.Error) {
+//                  initOwner(stage)
+                  title = "Error"
+                  headerText = "No more images to show !"
+                  contentText = "Please restart the program or choose more images in the Main file"
+                }.showAndWait()
+            }
+          }
           AnchorPane.setTopAnchor(answerText, 0)
           AnchorPane.setLeftAnchor(answerText, canvas.getWidth/2 - 35)
           AnchorPane.setTopAnchor(outputText, 70)

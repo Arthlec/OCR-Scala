@@ -37,12 +37,13 @@
  * https://github.com/alno/scalann/blob/master/examples/src/main/scala/org/scalann/examples/Mnist.scala
  * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
+package main.scala
 
-import main.view._
+import main.scala.view._
 import os.{Path, RelPath}
 import scalafx.application.JFXApp
-import scalafx.scene.canvas.{Canvas, GraphicsContext}
-import scalafx.scene.image.Image
+import scalafx.application.JFXApp.PrimaryStage
+import scalafx.scene.canvas.Canvas
 
 import scala.util.Random
 
@@ -50,6 +51,7 @@ object Main extends JFXApp with OCR {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
+  val numberOfImages = 10
   val wd: Path = os.pwd/"src"
   val datasetPath: RelPath = os.rel/"main"/"data"/"mnist_png"/"testing"
 //  System.out.println(wd / datasetPath)
@@ -57,17 +59,14 @@ object Main extends JFXApp with OCR {
 //  System.out.println(os.isDir(wd / datasetPath))
 //  System.out.println(os.list(wd / datasetPath))
 
-  val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(10)
+  val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(numberOfImages)
   val imagesIterator: Iterator[Path] = imagesIdxDataset.iterator
   System.out.println(imagesIdxDataset.length)
   System.out.println(imagesIdxDataset)
 
-  val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
-  val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
-  System.out.println(imagePath)
+  stage = refresh(windowWidth, windowHeight, canvas, imagesIterator)
 
-  val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, false, false)
-  val graphicsContext: GraphicsContext = canvas.graphicsContext2D
-
-  stage = refresh(windowWidth, windowHeight, canvas, graphicsContext, image)
+  def setStage(primaryStage: PrimaryStage): Unit ={
+    stage = primaryStage
+  }
 }
