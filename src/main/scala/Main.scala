@@ -51,7 +51,7 @@ object Main extends JFXApp with OCR {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
-  val numberOfImages = 10
+  val numberOfImages = 15
   val wd: Path = os.pwd/"src"
   val datasetPath: RelPath = os.rel/"main"/"data"/"mnist_png"/"testing"
 //  System.out.println(wd / datasetPath)

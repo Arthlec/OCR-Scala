@@ -19,7 +19,12 @@ package object view {
     val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
     val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
     System.out.println(imagePath)
+    System.out.println(imageRelPath)
     val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, false, false)
+
+    val pattern = "\\d".r
+    val folderIdx = pattern.findFirstIn(imageRelPath).head
+    System.out.println(folderIdx)
 
     new PrimaryStage {
       title = "Scala OCR"
@@ -29,7 +34,7 @@ package object view {
       scene = new Scene {
         fill = Black
         root = new VBox {
-          val answerText: Label = new Label {text = "Answer : "}
+          val answerText: Label = new Label {text = "Label : " + folderIdx}
           val outputText: Label = new Label {text = "Output : "}
           val previousButton: Button = new Button {
             text = "Previous"
@@ -42,7 +47,6 @@ package object view {
                 setStage(refresh(windowWidth, windowHeight, canvas, imagesIterator))
               else
                 new Alert(AlertType.Error) {
-//                  initOwner(stage)
                   title = "Error"
                   headerText = "No more images to show !"
                   contentText = "Please restart the program or choose more images in the Main file"
