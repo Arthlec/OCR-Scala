@@ -8,3 +8,5 @@ libraryDependencies += "org.scalafx" %% "scalafx" % "12.0.2-R18"
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.4.2"
+
+scalaSource in Compile := baseDirectory.value / "src"

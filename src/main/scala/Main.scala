@@ -39,7 +39,7 @@
  */
 package main.scala
 
-import main.scala.view._
+import main.scala.View._
 import os.{Path, RelPath}
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -47,17 +47,13 @@ import scalafx.scene.canvas.Canvas
 
 import scala.util.Random
 
-object Main extends JFXApp with OCR {
+object Main extends JFXApp {
   val windowHeight = 600
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
   val numberOfImages = 15
   val wd: Path = os.pwd/"src"
   val datasetPath: RelPath = os.rel/"main"/"data"/"mnist_png"/"testing"
-//  System.out.println(wd / datasetPath)
-//  System.out.println(os.exists(wd / datasetPath))
-//  System.out.println(os.isDir(wd / datasetPath))
-//  System.out.println(os.list(wd / datasetPath))
 
   val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(numberOfImages)
   val imagesIterator: Iterator[Path] = imagesIdxDataset.iterator
