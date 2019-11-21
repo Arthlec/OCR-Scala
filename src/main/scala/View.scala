@@ -11,6 +11,7 @@ import scalafx.scene.control.{Alert, Button, Label}
 import scalafx.scene.image.Image
 import scalafx.scene.layout.{AnchorPane, VBox}
 import scalafx.scene.paint.Color.Black
+import main.scala.Controller.ocr
 
 object View {
   def refresh(windowWidth : Double, windowHeight : Double, canvas: Canvas, imagesIterator: Iterator[Path]):
@@ -35,7 +36,7 @@ object View {
         fill = Black
         root = new VBox {
           val answerText: Label = new Label {text = "Label : " + folderIdx}
-          val outputText: Label = new Label {text = "Output : "}
+          val outputText: Label = new Label {text = "Output : " + ocr(imageRelPath)}
           val previousButton: Button = new Button {
             text = "Previous"
             disable = true

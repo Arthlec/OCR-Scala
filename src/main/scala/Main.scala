@@ -52,8 +52,8 @@ object Main extends JFXApp {
   val windowWidth = 400
   val canvas = new Canvas(400, 400)
   val numberOfImages = 15
-  val wd: Path = os.pwd/"src"
-  val datasetPath: RelPath = os.rel/"main"/"data"/"mnist_png"/"testing"
+  val wd: Path = os.pwd
+  val datasetPath: RelPath = os.rel/"src"/"main"/"data"/"mnist_png"/"testing"
 
   val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(numberOfImages)
   val imagesIterator: Iterator[Path] = imagesIdxDataset.iterator

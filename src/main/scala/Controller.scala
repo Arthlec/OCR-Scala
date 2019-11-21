@@ -1,21 +1,16 @@
 package main.scala
 
-import net.sourceforge.tess4j.Tesseract
-import net.sourceforge.tess4j.TesseractException
+import java.io.File
 
-import scala.reflect.io.File
+import net.sourceforge.tess4j.{ITesseract, Tesseract}
 
-object Controller extends App {
-  val tesseract = new Tesseract();
-  try {
-
-//    tesseract.setDatapath("D:/Tess4J/tessdata");
-    val text = tesseract.doOCR(new File("main/data/mnist_png/testing/0/3.png"))
-
-    // path of your image file
-    System.out.print(text);
-  }
-  catch (TesseractException e) {
-    e.printStackTrace();
+object Controller {
+  def ocr(imagePath : String): String = {
+    System.out.println(imagePath)
+    val tesseract: ITesseract = new Tesseract
+    tesseract.setDatapath("src/main/data/tessdata")
+    tesseract.setLanguage("eng")
+    val text = tesseract.doOCR(new File("src" + imagePath))
+    text
   }
 }
