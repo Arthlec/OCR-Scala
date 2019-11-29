@@ -20,8 +20,8 @@ object View {
     val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
     val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
 //    System.out.println(imagePath)
-//    System.out.println(imageRelPath)
-    val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, true, false)
+    System.out.println(imageRelPath)
+    val image = new Image(imageRelPath) //, canvas.getWidth, canvas.getHeight, false, false)
 
 //    val pattern = "\\d".r
 //    val folderIdx = pattern.findFirstIn(imageRelPath).head

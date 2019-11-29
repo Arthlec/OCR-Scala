@@ -1,15 +1,6 @@
 /***
  * Optical Character Recognition (OCR)
  *
- * *** The MNIST Database (http://yann.lecun.com/exdb/mnist/) ***
- * The MNIST database of handwritten digits, available from this page, has a training set of 60,000 examples, and a test
- * set of 10,000 examples. It is a subset of a larger set available from NIST. The digits have been size-normalized and
- * centered in a fixed-size image.
- * The original black and white (bilevel) images from NIST were size normalized to fit in a 20x20 pixel box while
- * preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing technique
- * used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of mass of the
- * pixels, and translating the image so as to position this point at the center of the 28x28 field.
- * Getting the dataset with .png images (https://github.com/myleott/mnist_png)
  *
  * *** IAM Handwriting Database (http://www.fki.inf.unibe.ch/databases/iam-handwriting-database) ***
  * The IAM Handwriting Database contains forms of handwritten English text which can be used to train and test
@@ -42,11 +33,11 @@ import scala.util.Random
 
 object Main extends JFXApp {
   val windowHeight = 600
-  val windowWidth = 1700
+  val windowWidth = 800
   val canvas = new Canvas(windowWidth, 400)
-  val numberOfImages = 15
+  val numberOfImages = 30
   val wd: Path = os.pwd
-  val datasetsPath: RelPath = os.rel/"src"/"main"/"data"/"datasets"
+  val datasetsPath: RelPath = os.rel/"src"/"main"/"data"/"datasets"/"IAM_words"
 
   val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetsPath).filter(_.ext == "png")).take(numberOfImages)
   val imagesIterator: Iterator[Path] = imagesIdxDataset.iterator
