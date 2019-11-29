@@ -19,13 +19,12 @@ object View {
     val graphicsContext: GraphicsContext = canvas.graphicsContext2D
     val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
     val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
-    System.out.println(imagePath)
-    System.out.println(imageRelPath)
-    val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, false, false)
+//    System.out.println(imagePath)
+//    System.out.println(imageRelPath)
+    val image = new Image(imageRelPath, canvas.getWidth, canvas.getHeight, true, false)
 
-    val pattern = "\\d".r
-    val folderIdx = pattern.findFirstIn(imageRelPath).head
-    System.out.println(folderIdx)
+//    val pattern = "\\d".r
+//    val folderIdx = pattern.findFirstIn(imageRelPath).head
 
     new PrimaryStage {
       title = "Scala OCR"
@@ -35,7 +34,7 @@ object View {
       scene = new Scene {
         fill = Black
         root = new VBox {
-          val answerText: Label = new Label {text = "Label : " + folderIdx}
+//          val answerText: Label = new Label {text = "Label : " + folderIdx}
           val outputText: Label = new Label {text = "Output : " + ocr(imageRelPath)}
           val previousButton: Button = new Button {
             text = "Previous"
@@ -54,8 +53,8 @@ object View {
                 }.showAndWait()
             }
           }
-          AnchorPane.setTopAnchor(answerText, 0)
-          AnchorPane.setLeftAnchor(answerText, canvas.getWidth/2 - 35)
+//          AnchorPane.setTopAnchor(answerText, 0)
+//          AnchorPane.setLeftAnchor(answerText, canvas.getWidth/2 - 35)
           AnchorPane.setTopAnchor(outputText, 70)
           AnchorPane.setLeftAnchor(outputText, canvas.getWidth/2 - 35)
           AnchorPane.setLeftAnchor(previousButton, 20)
@@ -63,13 +62,14 @@ object View {
           AnchorPane.setRightAnchor(nextButton, 20)
           AnchorPane.setTopAnchor(nextButton, 30)
           val pane: AnchorPane = new AnchorPane {
-            children = Seq(answerText, previousButton, nextButton, outputText)
+            children = Seq(/*answerText,*/ previousButton, nextButton, outputText)
           }
 
           spacing = 20.0
           children = List(canvas, pane)
         }
       }
+      graphicsContext.clearRect(0,0, canvas.getWidth, canvas.getHeight)
       graphicsContext.drawImage(image, 0, 0)
     }
   }

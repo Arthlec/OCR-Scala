@@ -9,33 +9,26 @@
  * preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing technique
  * used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of mass of the
  * pixels, and translating the image so as to position this point at the center of the 28x28 field.
+ * Getting the dataset with .png images (https://github.com/myleott/mnist_png)
  *
- * Getting the dataset as a PNG format (https://github.com/myleott/mnist_png)
+ * *** IAM Handwriting Database (http://www.fki.inf.unibe.ch/databases/iam-handwriting-database) ***
+ * The IAM Handwriting Database contains forms of handwritten English text which can be used to train and test
+ * handwritten text recognizers and to perform writer identification and verification experiments.
+ *
+ * *** The Street View Text Dataset (http://www.iapr-tc11.org/mediawiki/index.php?title=The_Street_View_Text_Dataset) ***
+ * The Street View Text (SVT) dataset was harvested from Google Street View. Image text in this data exhibits high
+ * variability and often has low resolution. In dealing with outdoor street level imagery, we note two characteristics.
+ * (1) Image text often comes from business signage and (2) business names are easily available through geographic
+ * business searches. These factors make the SVT set uniquely suited for word spotting in the wild: given a street view
+ * image, the goal is to identify words from nearby businesses. More details about the data set can be found in our
+ * paper, Word Spotting in the Wild [1]. For our up-to-date benchmarks on this data, see our paper, End-to-end Scene
+ * Text Recognition [2].
+ * This dataset only has word-level annotations (no character bounding boxes) and should be used for
+ * - cropped lexicon-driven word recognition and
+ * - full image lexicon-driven word detection and recognition.
  *
  * Other Datasets for future implementation :
  * https://lionbridge.ai/datasets/15-best-ocr-handwriting-datasets/
- *
- * *** Stanford Dataset (http://ai.stanford.edu/~btaskar/ocr/) ***
- * The tab delimited data file (letter.data.gz) contains a line for each letter, with its label, pixel values,
- * and several additional fields listed in letter.names file.
- * Columns : id, letter, next_id, word_id, position, fold, p_0_0, p_0_1, ...
- * Lettres en 16 x 8 pixels
- *
- *
- *
- *
- * Ressources :
- * https://docs.opencv.org/2.4/doc/tutorials/features2d/trackingmotion/harris_detector/harris_detector.html
- *
- * https://en.wikipedia.org/wiki/Optical_character_recognition
- * https://github.com/saibot94/scala-ocr-parser
- * http://tess4j.sourceforge.net/
- * https://towardsdatascience.com/ocr-with-akka-tesseract-and-javacv-part-1-702781fc73ca
- * https://towardsdatascience.com/a-gentle-introduction-to-ocr-ee1469a201aa
- *
- * Scala MNIST :
- * https://github.com/alno/scalann/blob/master/examples/src/main/scala/org/scalann/examples/Mnist.scala
- * https://github.com/saurfang/spark-knn/blob/master/spark-knn-examples/src/main/scala/com/github/saurfang/spark/ml/knn/examples/MNIST.scala
  */
 package main.scala
 
@@ -49,16 +42,16 @@ import scala.util.Random
 
 object Main extends JFXApp {
   val windowHeight = 600
-  val windowWidth = 400
-  val canvas = new Canvas(400, 400)
+  val windowWidth = 1700
+  val canvas = new Canvas(windowWidth, 400)
   val numberOfImages = 15
   val wd: Path = os.pwd
-  val datasetPath: RelPath = os.rel/"src"/"main"/"data"/"mnist_png"/"testing"
+  val datasetsPath: RelPath = os.rel/"src"/"main"/"data"/"datasets"
 
-  val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetPath).filter(_.ext == "png")).take(numberOfImages)
+  val imagesIdxDataset: IndexedSeq[Path] = Random.shuffle(os.walk(wd/datasetsPath).filter(_.ext == "png")).take(numberOfImages)
   val imagesIterator: Iterator[Path] = imagesIdxDataset.iterator
-  System.out.println(imagesIdxDataset.length)
-  System.out.println(imagesIdxDataset)
+//  System.out.println(imagesIdxDataset.length)
+//  System.out.println(imagesIdxDataset)
 
   stage = refresh(windowWidth, windowHeight, canvas, imagesIterator)
 
