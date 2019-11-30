@@ -14,17 +14,16 @@ import scalafx.scene.paint.Color.Black
 import main.scala.Controller.ocr
 
 object View {
-  def refresh(windowWidth : Double, windowHeight : Double, canvas: Canvas, imagesIterator: Iterator[Path]):
+  def refresh(windowWidth : Double, windowHeight : Double, canvasOriginal : Canvas, canvasProcessed : Canvas,
+              imagesIterator: Iterator[Path]):
   PrimaryStage = {
-    val graphicsContext: GraphicsContext = canvas.graphicsContext2D
+    val graphicsContextOriginal: GraphicsContext = canvasOriginal.graphicsContext2D
+    val graphicsContextProcessed: GraphicsContext = canvasProcessed.graphicsContext2D
     val imagePath: String = imagesIterator.next.toString.replace("\\", "/")
     val imageRelPath: String = imagePath.substring(imagePath.lastIndexOf("/main"), imagePath.length)
 //    System.out.println(imagePath)
     System.out.println(imageRelPath)
-    val image = new Image(imageRelPath) //, canvas.getWidth, canvas.getHeight, false, false)
-
-//    val pattern = "\\d".r
-//    val folderIdx = pattern.findFirstIn(imageRelPath).head
+    val image = new Image(imageRelPath, canvasOriginal.getWidth, canvasOriginal.getHeight, true, false)
 
     new PrimaryStage {
       title = "Scala OCR"
@@ -34,7 +33,6 @@ object View {
       scene = new Scene {
         fill = Black
         root = new VBox {
-//          val answerText: Label = new Label {text = "Label : " + folderIdx}
           val outputText: Label = new Label {text = "Output : " + ocr(imageRelPath)}
           val previousButton: Button = new Button {
             text = "Previous"
@@ -44,7 +42,7 @@ object View {
             text = "Next"
             onMouseClicked = (_: input.MouseEvent) => {
               if (imagesIterator.hasNext)
-                setStage(refresh(windowWidth, windowHeight, canvas, imagesIterator))
+                setStage(refresh(windowWidth, windowHeight, canvasOriginal, canvasProcessed, imagesIterator))
               else
                 new Alert(AlertType.Error) {
                   title = "Error"
@@ -53,24 +51,24 @@ object View {
                 }.showAndWait()
             }
           }
-//          AnchorPane.setTopAnchor(answerText, 0)
-//          AnchorPane.setLeftAnchor(answerText, canvas.getWidth/2 - 35)
-          AnchorPane.setTopAnchor(outputText, 70)
-          AnchorPane.setLeftAnchor(outputText, canvas.getWidth/2 - 35)
+          AnchorPane.setTopAnchor(outputText, 50)
+          AnchorPane.setLeftAnchor(outputText, canvasOriginal.getWidth/2 - 35)
           AnchorPane.setLeftAnchor(previousButton, 20)
           AnchorPane.setTopAnchor(previousButton, 30)
           AnchorPane.setRightAnchor(nextButton, 20)
           AnchorPane.setTopAnchor(nextButton, 30)
           val pane: AnchorPane = new AnchorPane {
-            children = Seq(/*answerText,*/ previousButton, nextButton, outputText)
+            children = Seq(previousButton, nextButton, outputText)
           }
 
           spacing = 20.0
-          children = List(canvas, pane)
+          children = List(canvasOriginal, canvasProcessed, pane)
         }
       }
-      graphicsContext.clearRect(0,0, canvas.getWidth, canvas.getHeight)
-      graphicsContext.drawImage(image, 0, 0)
+      graphicsContextOriginal.clearRect(0,0, canvasOriginal.getWidth, canvasOriginal.getHeight)
+      graphicsContextOriginal.drawImage(image, 0, 0)
+      graphicsContextProcessed.clearRect(0,0, canvasProcessed.getWidth, canvasProcessed.getHeight)
+      graphicsContextProcessed.drawImage(image, 0, 0)
     }
   }
 }
