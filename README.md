@@ -2,7 +2,7 @@
 
 Course unit : DSIA-5201C  
 
-Developers : Arthur Lecert
+Author : Arthur Lecert
 
 Teacher : Angelo Corsero
 
