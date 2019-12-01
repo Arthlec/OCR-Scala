@@ -1,4 +1,4 @@
-#  Optical Character Recognition (OCR) in Scala
+#  Optical Character Recognition (OCR) with Scala
 
 Course unit : DSIA-5201C  
 
