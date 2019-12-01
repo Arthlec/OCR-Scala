@@ -22,7 +22,7 @@ The IAM Handwriting Database contains forms of handwritten English text which ca
 handwritten text recognizers and to perform writer identification and verification experiments.
  
 ### Dataset for future implementation
-####[The Street View Text Dataset](http://www.iapr-tc11.org/mediawiki/index.php?title=The_Street_View_Text_Dataset)
+#### [The Street View Text Dataset](http://www.iapr-tc11.org/mediawiki/index.php?title=The_Street_View_Text_Dataset)
 
 The Street View Text (SVT) dataset was harvested from Google Street View. Image text in this data exhibits high
 variability and often has low resolution. In dealing with outdoor street level imagery, we note two characteristics.
