@@ -36,7 +36,7 @@ object Main extends JFXApp {
   val windowWidth = 1200
   val canvasOriginal = new Canvas(windowWidth, 400)
   val canvasProcessed = new Canvas(windowWidth, 400)
-  val numberOfImages = 30
+  val numberOfImages = 50
   val wd: Path = os.pwd
   val datasetsPath: RelPath = os.rel/"src"/"main"/"data"/"datasets"/"IAM_words"
 

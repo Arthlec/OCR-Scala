@@ -16,31 +16,25 @@ object Controller {
     val writableImage : WritableImage = new WritableImage(pixelReader, width, height)
     val pixelWriter = writableImage.pixelWriter
 
+    // Mandatory for loop to use pixelReader object
     val pixelsValue = for {
       y <- 0 until height
       x <- 0 until width
     } yield {
-      val color = pixelReader.getColor(x, y)
-      val grayColor = color.grayscale
-      val componentValue = (grayColor.blue * 255).toInt // or red or green
-      componentValue
+      (pixelReader.getColor(x, y).grayscale.blue * 255).toInt // or red or green
     }
 
+    // https://damieng.com/blog/2014/12/11/sequence-averages-in-scala
     val threshold = pixelsValue.foldLeft((0.0, 1)) { case ((avg, idx), next) => (avg + (next - avg)/idx, idx + 1) }._1
 
     // Mandatory for loop to use pixelReader object
     for {
       y <- 0 until height
       x <- 0 until width
-    }  {
-      val color = pixelReader.getColor(x, y)
-      val grayColor = color.grayscale
-      val componentValue = (grayColor.blue * 255).toInt // or red or green
-      if (componentValue > threshold){
-        pixelWriter.setColor(x, y, Color.White)
-      }else{
-        pixelWriter.setColor(x, y, Color.Black)
-      }
+    } {
+      val componentValue = (pixelReader.getColor(x, y).grayscale.blue * 255).toInt // or red or green
+      if (componentValue > threshold) pixelWriter.setColor(x, y, Color.White)
+      else pixelWriter.setColor(x, y, Color.Black)
     }
     writableImage
   }
