@@ -41,7 +41,7 @@ This dataset only has word-level annotations (no character bounding boxes) and s
 - [OS-Lib](https://github.com/lihaoyi/os-lib)
 - [Tess4J](http://tess4j.sourceforge.net/)
 
-## Prerequisites
+## Dependencies
 
 - [Scala](https://www.scala-lang.org/)
 - [Scala Build Tool](https://www.scala-sbt.org/)
