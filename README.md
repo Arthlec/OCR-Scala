@@ -1,6 +1,6 @@
 #  Optical Character Recognition (OCR) with Scala
 
-Course unit : DSIA-5201C  
+Course unit : DSIA-5101C  
 
 Author : Arthur Lecert
 
